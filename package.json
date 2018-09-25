@@ -18,7 +18,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.44",
+    "@babel/core": "7.0.0-rc.2",
+    "@vue/test-utils": "^1.0.0-beta.25",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "bili": "^3.0.15",
     "eslint": "^4.19.1",
