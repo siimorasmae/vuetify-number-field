@@ -2,10 +2,10 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-require('vuetify/src/stylus/components/_input-groups.styl');
+require('vuetify/src/stylus/components/_inputs.styl');
 require('vuetify/src/stylus/components/_text-fields.styl');
 var Colorable = _interopDefault(require('vuetify/es5/mixins/colorable'));
-var Input = _interopDefault(require('vuetify/es5/mixins/input'));
+var Input = _interopDefault(require('vuetify/es5/components/VInput'));
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {

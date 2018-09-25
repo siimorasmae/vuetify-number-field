@@ -1,10 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vuetify/src/stylus/components/_input-groups.styl'), require('vuetify/es5/mixins/input')) :
-  typeof define === 'function' && define.amd ? define(['vuetify/src/stylus/components/_input-groups.styl', 'vuetify/es5/mixins/input'], factory) :
-  (global.vuetifyNumberField = factory(null,global.Input));
-}(this, (function (_inputGroups_styl,Input) { 'use strict';
-
-  Input = Input && Input.hasOwnProperty('default') ? Input['default'] : Input;
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.vuetifyNumberField = factory());
+}(this, (function () { 'use strict';
 
   function _defineProperty(obj, key, value) {
     if (key in obj) {
@@ -8131,6 +8129,1853 @@
   });
 
   var Colorable = unwrapExports(colorable);
+
+  var sizeable = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.default = _vue2.default.extend({
+      name: 'sizeable',
+      props: {
+          large: Boolean,
+          medium: Boolean,
+          size: {
+              type: [Number, String]
+          },
+          small: Boolean,
+          xLarge: Boolean
+      }
+  });
+
+  });
+
+  unwrapExports(sizeable);
+
+  var themeable = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  exports.functionalThemeClasses = functionalThemeClasses;
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function functionalThemeClasses(context) {
+      var vm = _extends({}, context.props, context.injections);
+      var isDark = Themeable.options.computed.isDark.call(vm);
+      return Themeable.options.computed.themeClasses.call({ isDark: isDark });
+  }
+  /* @vue/component */
+  var Themeable = _vue2.default.extend().extend({
+      name: 'themeable',
+      provide: function provide() {
+          return {
+              theme: this.themeableProvide
+          };
+      },
+
+      inject: {
+          theme: {
+              default: {
+                  isDark: false
+              }
+          }
+      },
+      props: {
+          dark: {
+              type: Boolean,
+              default: null
+          },
+          light: {
+              type: Boolean,
+              default: null
+          }
+      },
+      data: function data() {
+          return {
+              themeableProvide: {
+                  isDark: false
+              }
+          };
+      },
+
+      computed: {
+          isDark: function isDark() {
+              if (this.dark === true) {
+                  // explicitly dark
+                  return true;
+              } else if (this.light === true) {
+                  // explicitly light
+                  return false;
+              } else {
+                  // inherit from parent, or default false if there is none
+                  return this.theme.isDark;
+              }
+          },
+          themeClasses: function themeClasses() {
+              return {
+                  'theme--dark': this.isDark,
+                  'theme--light': !this.isDark
+              };
+          }
+      },
+      watch: {
+          isDark: {
+              handler: function handler(newVal, oldVal) {
+                  if (newVal !== oldVal) {
+                      this.themeableProvide.isDark = this.isDark;
+                  }
+              },
+
+              immediate: true
+          }
+      }
+  });
+  exports.default = Themeable;
+
+  });
+
+  unwrapExports(themeable);
+  var themeable_1 = themeable.functionalThemeClasses;
+
+  var helpers = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  exports.createSimpleFunctional = createSimpleFunctional;
+  exports.createSimpleTransition = createSimpleTransition;
+  exports.createJavaScriptTransition = createJavaScriptTransition;
+  exports.directiveConfig = directiveConfig;
+  exports.addOnceEventListener = addOnceEventListener;
+  exports.getNestedValue = getNestedValue;
+  exports.deepEqual = deepEqual;
+  exports.getObjectValueByPath = getObjectValueByPath;
+  exports.getPropertyFromItem = getPropertyFromItem;
+  exports.createRange = createRange;
+  exports.getZIndex = getZIndex;
+  exports.escapeHTML = escapeHTML;
+  exports.filterObjectOnKeys = filterObjectOnKeys;
+  exports.filterChildren = filterChildren;
+  exports.convertToUnit = convertToUnit;
+  exports.kebabCase = kebabCase;
+  exports.isObject = isObject;
+  exports.remapInternalIcon = remapInternalIcon;
+  exports.keys = keys;
+  function createSimpleFunctional(c) {
+      var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'div';
+      var name = arguments[2];
+
+      return {
+          name: name || c.replace(/__/g, '-'),
+          functional: true,
+          render: function render(h, _ref) {
+              var data = _ref.data,
+                  children = _ref.children;
+
+              data.staticClass = (c + ' ' + (data.staticClass || '')).trim();
+              return h(el, data, children);
+          }
+      };
+  }
+  function mergeTransitions(transitions, array) {
+      if (Array.isArray(transitions)) return transitions.concat(array);
+      if (transitions) array.push(transitions);
+      return array;
+  }
+  function createSimpleTransition(name) {
+      var origin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top center 0';
+      var mode = arguments[2];
+
+      return {
+          name: name,
+          functional: true,
+          props: {
+              group: {
+                  type: Boolean,
+                  default: false
+              },
+              hideOnLeave: {
+                  type: Boolean,
+                  default: false
+              },
+              leaveAbsolute: {
+                  type: Boolean,
+                  default: false
+              },
+              mode: {
+                  type: String,
+                  default: mode
+              },
+              origin: {
+                  type: String,
+                  default: origin
+              }
+          },
+          render: function render(h, context) {
+              var tag = 'transition' + (context.props.group ? '-group' : '');
+              context.data = context.data || {};
+              context.data.props = {
+                  name: name,
+                  mode: context.props.mode
+              };
+              context.data.on = context.data.on || {};
+              if (!Object.isExtensible(context.data.on)) {
+                  context.data.on = _extends({}, context.data.on);
+              }
+              var ourBeforeEnter = [];
+              var ourLeave = [];
+              var absolute = function absolute(el) {
+                  return el.style.position = 'absolute';
+              };
+              ourBeforeEnter.push(function (el) {
+                  el.style.transformOrigin = context.props.origin;
+                  el.style.webkitTransformOrigin = context.props.origin;
+              });
+              if (context.props.leaveAbsolute) ourLeave.push(absolute);
+              if (context.props.hideOnLeave) {
+                  ourLeave.push(function (el) {
+                      return el.style.display = 'none';
+                  });
+              }
+              var _context$data$on = context.data.on,
+                  beforeEnter = _context$data$on.beforeEnter,
+                  leave = _context$data$on.leave;
+              // Type says Function | Function[] but
+              // will only work if provided a function
+
+              context.data.on.beforeEnter = function () {
+                  return mergeTransitions(beforeEnter, ourBeforeEnter);
+              };
+              context.data.on.leave = mergeTransitions(leave, ourLeave);
+              return h(tag, context.data, context.children);
+          }
+      };
+  }
+  function createJavaScriptTransition(name, functions) {
+      var mode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'in-out';
+
+      return {
+          name: name,
+          functional: true,
+          props: {
+              mode: {
+                  type: String,
+                  default: mode
+              }
+          },
+          render: function render(h, context) {
+              var data = {
+                  props: _extends({}, context.props, {
+                      name: name
+                  }),
+                  on: functions
+              };
+              return h('transition', data, context.children);
+          }
+      };
+  }
+  function directiveConfig(binding) {
+      var defaults = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      return _extends({}, defaults, binding.modifiers, {
+          value: binding.arg
+      }, binding.value || {});
+  }
+  function addOnceEventListener(el, event, cb) {
+      var once = function once() {
+          cb();
+          el.removeEventListener(event, once, false);
+      };
+      el.addEventListener(event, once, false);
+  }
+  function getNestedValue(obj, path, fallback) {
+      var last = path.length - 1;
+      if (last < 0) return obj === undefined ? fallback : obj;
+      for (var i = 0; i < last; i++) {
+          if (obj == null) {
+              return fallback;
+          }
+          obj = obj[path[i]];
+      }
+      if (obj == null) return fallback;
+      return obj[path[last]] === undefined ? fallback : obj[path[last]];
+  }
+  function deepEqual(a, b) {
+      if (a === b) return true;
+      if (a instanceof Date && b instanceof Date) {
+          // If the values are Date, they were convert to timestamp with getTime and compare it
+          if (a.getTime() !== b.getTime()) return false;
+      }
+      if (a !== Object(a) || b !== Object(b)) {
+          // If the values aren't objects, they were already checked for equality
+          return false;
+      }
+      var props = Object.keys(a);
+      if (props.length !== Object.keys(b).length) {
+          // Different number of props, don't bother to check
+          return false;
+      }
+      return props.every(function (p) {
+          return deepEqual(a[p], b[p]);
+      });
+  }
+  function getObjectValueByPath(obj, path, fallback) {
+      // credit: http://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-with-string-key#comment55278413_6491621
+      if (!path || path.constructor !== String) return fallback;
+      path = path.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+      path = path.replace(/^\./, ''); // strip a leading dot
+      return getNestedValue(obj, path.split('.'), fallback);
+  }
+  function getPropertyFromItem(item, property, fallback) {
+      if (property == null) return item === undefined ? fallback : item;
+      if (item !== Object(item)) return fallback === undefined ? item : fallback;
+      if (typeof property === 'string') return getObjectValueByPath(item, property, fallback);
+      if (Array.isArray(property)) return getNestedValue(item, property, fallback);
+      if (typeof property !== 'function') return fallback;
+      var value = property(item, fallback);
+      return typeof value === 'undefined' ? fallback : value;
+  }
+  function createRange(length) {
+      return Array.from({ length: length }, function (v, k) {
+          return k;
+      });
+  }
+  function getZIndex(el) {
+      if (!el || el.nodeType !== Node.ELEMENT_NODE) return 0;
+      var index = +window.getComputedStyle(el).getPropertyValue('z-index');
+      if (isNaN(index)) return getZIndex(el.parentNode);
+      return index;
+  }
+  var tagsToReplace = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;'
+  };
+  function escapeHTML(str) {
+      return str.replace(/[&<>]/g, function (tag) {
+          return tagsToReplace[tag] || tag;
+      });
+  }
+  function filterObjectOnKeys(obj, keys) {
+      var filtered = {};
+      for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (typeof obj[key] !== 'undefined') {
+              filtered[key] = obj[key];
+          }
+      }
+      return filtered;
+  }
+  function filterChildren() {
+      var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var tag = arguments[1];
+
+      return array.filter(function (child) {
+          return child.componentOptions && child.componentOptions.Ctor.options.name === tag;
+      });
+  }
+  function convertToUnit(str) {
+      var unit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'px';
+
+      if (str == null || str === '') {
+          return undefined;
+      } else if (isNaN(+str)) {
+          return String(str);
+      } else {
+          return '' + Number(str) + unit;
+      }
+  }
+  function kebabCase(str) {
+      return (str || '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  }
+  function isObject(obj) {
+      return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+  }
+  // KeyboardEvent.keyCode aliases
+  var keyCodes = exports.keyCodes = Object.freeze({
+      enter: 13,
+      tab: 9,
+      delete: 46,
+      esc: 27,
+      space: 32,
+      up: 38,
+      down: 40,
+      left: 37,
+      right: 39,
+      end: 35,
+      home: 36,
+      del: 46,
+      backspace: 8,
+      insert: 45,
+      pageup: 33,
+      pagedown: 34
+  });
+  var ICONS_PREFIX = '$vuetify.icons.';
+  // This remaps internal names like '$vuetify.icons.cancel' to the current name
+  // for that icon.
+  function remapInternalIcon(vm, iconName) {
+      if (!iconName.startsWith(ICONS_PREFIX)) {
+          return iconName;
+      }
+      // Now look up icon indirection name, e.g. '$vuetify.icons.cancel'
+      return getObjectValueByPath(vm, iconName, iconName);
+  }
+  function keys(o) {
+      return Object.keys(o);
+  }
+  /**
+   * Camelize a hyphen-delimited string.
+   */
+  var camelizeRE = /-(\w)/g;
+  var camelize = exports.camelize = function camelize(str) {
+      return str.replace(camelizeRE, function (_, c) {
+          return c ? c.toUpperCase() : '';
+      });
+  };
+
+  });
+
+  unwrapExports(helpers);
+  var helpers_1 = helpers.createSimpleFunctional;
+  var helpers_2 = helpers.createSimpleTransition;
+  var helpers_3 = helpers.createJavaScriptTransition;
+  var helpers_4 = helpers.directiveConfig;
+  var helpers_5 = helpers.addOnceEventListener;
+  var helpers_6 = helpers.getNestedValue;
+  var helpers_7 = helpers.deepEqual;
+  var helpers_8 = helpers.getObjectValueByPath;
+  var helpers_9 = helpers.getPropertyFromItem;
+  var helpers_10 = helpers.createRange;
+  var helpers_11 = helpers.getZIndex;
+  var helpers_12 = helpers.escapeHTML;
+  var helpers_13 = helpers.filterObjectOnKeys;
+  var helpers_14 = helpers.filterChildren;
+  var helpers_15 = helpers.convertToUnit;
+  var helpers_16 = helpers.kebabCase;
+  var helpers_17 = helpers.isObject;
+  var helpers_18 = helpers.remapInternalIcon;
+  var helpers_19 = helpers.keys;
+  var helpers_20 = helpers.keyCodes;
+  var helpers_21 = helpers.camelize;
+
+  var mixins_1 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.default = mixins;
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function mixins() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+      }
+
+      return _vue2.default.extend({ mixins: args });
+  } /* eslint-disable max-len, import/export, no-use-before-define */
+
+  });
+
+  unwrapExports(mixins_1);
+
+  var VIcon_1 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  // Mixins
+
+  // Util
+
+  // Types
+
+
+
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+
+
+  var _sizeable2 = _interopRequireDefault(sizeable);
+
+
+
+  var _themeable2 = _interopRequireDefault(themeable);
+
+
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+
+
+  var _mixins2 = _interopRequireDefault(mixins_1);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  var SIZE_MAP;
+  (function (SIZE_MAP) {
+      SIZE_MAP["small"] = "16px";
+      SIZE_MAP["default"] = "24px";
+      SIZE_MAP["medium"] = "28px";
+      SIZE_MAP["large"] = "36px";
+      SIZE_MAP["xLarge"] = "40px";
+  })(SIZE_MAP || (SIZE_MAP = {}));
+  function isFontAwesome5(iconType) {
+      return ['fas', 'far', 'fal', 'fab'].some(function (val) {
+          return iconType.includes(val);
+      });
+  }
+  var VIcon = (0, _mixins2.default)(_colorable2.default, _sizeable2.default, _themeable2.default
+  /* @vue/component */
+  ).extend({
+      name: 'v-icon',
+      props: {
+          disabled: Boolean,
+          left: Boolean,
+          right: Boolean
+      },
+      render: function render(h) {
+          var _extends2;
+
+          var sizes = {
+              small: this.small,
+              medium: this.medium,
+              large: this.large,
+              xLarge: this.xLarge
+          };
+          var explicitSize = (0, helpers.keys)(sizes).find(function (key) {
+              return sizes[key] && !!key;
+          });
+          var fontSize = explicitSize && SIZE_MAP[explicitSize] || (0, helpers.convertToUnit)(this.size);
+          var newChildren = [];
+          var data = {
+              staticClass: 'v-icon',
+              attrs: _extends({
+                  'aria-hidden': true
+              }, this.$attrs),
+              on: this.$listeners
+          };
+          if (fontSize) data.style = { fontSize: fontSize };
+          var iconName = '';
+          if (this.$slots.default) iconName = this.$slots.default[0].text;
+          // Remap internal names like '$vuetify.icons.cancel' to the current name for that icon
+          iconName = (0, helpers.remapInternalIcon)(this, iconName);
+          var iconType = 'material-icons';
+          // Material Icon delimiter is _
+          // https://material.io/icons/
+          var delimiterIndex = iconName.indexOf('-');
+          var isCustomIcon = delimiterIndex > -1;
+          if (isCustomIcon) {
+              iconType = iconName.slice(0, delimiterIndex);
+              if (isFontAwesome5(iconType)) iconType = '';
+              // Assume if not a custom icon
+              // is Material Icon font
+          } else newChildren.push(iconName);
+          data.class = _extends((_extends2 = {
+              'v-icon--disabled': this.disabled,
+              'v-icon--left': this.left,
+              'v-icon--link': this.$listeners.click || this.$listeners['!click'],
+              'v-icon--right': this.right
+          }, _defineProperty(_extends2, iconType, true), _defineProperty(_extends2, iconName, isCustomIcon), _extends2), this.themeClasses);
+          return h('i', this.setTextColor(this.color, data), newChildren);
+      }
+  });
+  exports.default = _vue2.default.extend({
+      name: 'v-icon',
+      $_wrapperFor: VIcon,
+      functional: true,
+      render: function render(h, _ref) {
+          var data = _ref.data,
+              children = _ref.children;
+
+          var iconName = '';
+          // Support usage of v-text and v-html
+          if (data.domProps) {
+              iconName = data.domProps.textContent || data.domProps.innerHTML || iconName;
+              // Remove nodes so it doesn't
+              // overwrite our changes
+              delete data.domProps.textContent;
+              delete data.domProps.innerHTML;
+          }
+          return h(VIcon, data, iconName ? [iconName] : children);
+      }
+  });
+
+  });
+
+  unwrapExports(VIcon_1);
+
+  var VIcon$1 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.VIcon = undefined;
+
+
+
+  var _VIcon2 = _interopRequireDefault(VIcon_1);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.VIcon = _VIcon2.default;
+  exports.default = _VIcon2.default;
+
+  });
+
+  unwrapExports(VIcon$1);
+  var VIcon_1$1 = VIcon$1.VIcon;
+
+  var VLabel = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // Styles
+
+  // Mixins
+
+  // Helpers
+
+
+
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+
+
+  var _themeable2 = _interopRequireDefault(themeable);
+
+
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  /* @vue/component */
+  exports.default = {
+      name: 'v-label',
+      functional: true,
+      mixins: [_themeable2.default],
+      props: {
+          absolute: Boolean,
+          color: {
+              type: [Boolean, String],
+              default: 'primary'
+          },
+          disabled: Boolean,
+          focused: Boolean,
+          for: String,
+          left: {
+              type: [Number, String],
+              default: 0
+          },
+          right: {
+              type: [Number, String],
+              default: 'auto'
+          },
+          value: Boolean
+      },
+      render: function render(h, ctx) {
+          var children = ctx.children,
+              listeners = ctx.listeners,
+              props = ctx.props;
+
+          var data = {
+              staticClass: 'v-label',
+              'class': _extends({
+                  'v-label--active': props.value,
+                  'v-label--is-disabled': props.disabled
+              }, (0, themeable.functionalThemeClasses)(ctx)),
+              attrs: {
+                  for: props.for,
+                  'aria-hidden': !props.for
+              },
+              on: listeners,
+              style: {
+                  left: (0, helpers.convertToUnit)(props.left),
+                  right: (0, helpers.convertToUnit)(props.right),
+                  position: props.absolute ? 'absolute' : 'relative'
+              }
+          };
+          return h('label', _colorable2.default.options.methods.setTextColor(props.focused && props.color, data), children);
+      }
+  };
+
+  });
+
+  unwrapExports(VLabel);
+
+  var VLabel$2 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.VLabel = undefined;
+
+
+
+  var _VLabel2 = _interopRequireDefault(VLabel);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.VLabel = _VLabel2.default;
+  exports.default = _VLabel2.default;
+
+  });
+
+  unwrapExports(VLabel$2);
+  var VLabel_1 = VLabel$2.VLabel;
+
+  var VMessages = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+
+
+  var _themeable2 = _interopRequireDefault(themeable);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  /* @vue/component */
+
+  // Mixins
+  exports.default = {
+      name: 'v-messages',
+      mixins: [_colorable2.default, _themeable2.default],
+      props: {
+          value: {
+              type: Array,
+              default: function _default() {
+                  return [];
+              }
+          }
+      },
+      methods: {
+          genChildren: function genChildren() {
+              var _this = this;
+
+              return this.$createElement('transition-group', {
+                  staticClass: 'v-messages__wrapper',
+                  attrs: {
+                      name: 'message-transition',
+                      tag: 'div'
+                  }
+              }, this.value.map(function (m) {
+                  return _this.genMessage(m);
+              }));
+          },
+          genMessage: function genMessage(key) {
+              return this.$createElement('div', {
+                  staticClass: 'v-messages__message',
+                  key: key,
+                  domProps: {
+                      innerHTML: key
+                  }
+              });
+          }
+      },
+      render: function render(h) {
+          return h('div', this.setTextColor(this.color, {
+              staticClass: 'v-messages',
+              class: this.themeClasses
+          }), [this.genChildren()]);
+      }
+  }; // Styles
+
+  });
+
+  unwrapExports(VMessages);
+
+  var VMessages$2 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.VMessages = undefined;
+
+
+
+  var _VMessages2 = _interopRequireDefault(VMessages);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.VMessages = _VMessages2.default;
+  exports.default = _VMessages2.default;
+
+  });
+
+  unwrapExports(VMessages$2);
+  var VMessages_1 = VMessages$2.VMessages;
+
+  var expandTransition = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  exports.default = function () {
+      var expandedParentClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+      return {
+          enter: function enter(el, done) {
+              el._parent = el.parentNode;
+              el._height = el._height != null ? el._height : el.style.height;
+              (0, helpers.addOnceEventListener)(el, 'transitionend', done);
+              // Get height that is to be scrolled
+              el.style.overflow = 'hidden';
+              el.style.height = 0;
+              el.style.display = 'block';
+              expandedParentClass && el._parent.classList.add(expandedParentClass);
+              setTimeout(function () {
+                  el.style.height = el._height || (!el.scrollHeight ? 'auto' : el.scrollHeight + 'px');
+              }, 100);
+          },
+          afterEnter: function afterEnter(el) {
+              el.style.overflow = null;
+              // If user supplied height
+              // leave it
+              if (el._height) return;
+              el.style.height = null;
+          },
+          leave: function leave(el, done) {
+              // Remove initial transition
+              (0, helpers.addOnceEventListener)(el, 'transitionend', done);
+              // Set height before we transition to 0
+              el.style.overflow = 'hidden';
+              // If no user supplied height
+              // pass in the scrollHeight
+              if (!el._height) {
+                  el.style.height = el.scrollHeight + 'px';
+              }
+              setTimeout(function () {
+                  return el.style.height = 0;
+              }, 100);
+          },
+          afterLeave: function afterLeave(el) {
+              expandedParentClass && el._parent && el._parent.classList.remove(expandedParentClass);
+              // If user supplied height
+              // leave it
+              if (el._height) return;
+              el.style.height = null;
+          }
+      };
+  };
+
+
+
+  });
+
+  unwrapExports(expandTransition);
+
+  var transitions = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.VRowExpandTransition = exports.VExpandTransition = exports.VSlideYReverseTransition = exports.VSlideYTransition = exports.VSlideXReverseTransition = exports.VSlideXTransition = exports.VScrollYReverseTransition = exports.VScrollYTransition = exports.VScrollXReverseTransition = exports.VScrollXTransition = exports.VScaleTransition = exports.VFadeTransition = exports.VDialogBottomTransition = exports.VDialogTransition = exports.VFabTransition = exports.VMenuTransition = exports.VTabReverseTransition = exports.VTabTransition = exports.VCarouselReverseTransition = exports.VCarouselTransition = exports.VBottomSheetTransition = undefined;
+
+
+
+
+
+  var _expandTransition2 = _interopRequireDefault(expandTransition);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  // Component specific transitions
+  var VBottomSheetTransition = exports.VBottomSheetTransition = (0, helpers.createSimpleTransition)('bottom-sheet-transition');
+  var VCarouselTransition = exports.VCarouselTransition = (0, helpers.createSimpleTransition)('carousel-transition');
+  var VCarouselReverseTransition = exports.VCarouselReverseTransition = (0, helpers.createSimpleTransition)('carousel-reverse-transition');
+  var VTabTransition = exports.VTabTransition = (0, helpers.createSimpleTransition)('tab-transition');
+  var VTabReverseTransition = exports.VTabReverseTransition = (0, helpers.createSimpleTransition)('tab-reverse-transition');
+  var VMenuTransition = exports.VMenuTransition = (0, helpers.createSimpleTransition)('menu-transition');
+  var VFabTransition = exports.VFabTransition = (0, helpers.createSimpleTransition)('fab-transition', 'center center', 'out-in');
+  // Generic transitions
+  var VDialogTransition = exports.VDialogTransition = (0, helpers.createSimpleTransition)('dialog-transition');
+  var VDialogBottomTransition = exports.VDialogBottomTransition = (0, helpers.createSimpleTransition)('dialog-bottom-transition');
+  var VFadeTransition = exports.VFadeTransition = (0, helpers.createSimpleTransition)('fade-transition');
+  var VScaleTransition = exports.VScaleTransition = (0, helpers.createSimpleTransition)('scale-transition');
+  var VScrollXTransition = exports.VScrollXTransition = (0, helpers.createSimpleTransition)('scroll-x-transition');
+  var VScrollXReverseTransition = exports.VScrollXReverseTransition = (0, helpers.createSimpleTransition)('scroll-x-reverse-transition');
+  var VScrollYTransition = exports.VScrollYTransition = (0, helpers.createSimpleTransition)('scroll-y-transition');
+  var VScrollYReverseTransition = exports.VScrollYReverseTransition = (0, helpers.createSimpleTransition)('scroll-y-reverse-transition');
+  var VSlideXTransition = exports.VSlideXTransition = (0, helpers.createSimpleTransition)('slide-x-transition');
+  var VSlideXReverseTransition = exports.VSlideXReverseTransition = (0, helpers.createSimpleTransition)('slide-x-reverse-transition');
+  var VSlideYTransition = exports.VSlideYTransition = (0, helpers.createSimpleTransition)('slide-y-transition');
+  var VSlideYReverseTransition = exports.VSlideYReverseTransition = (0, helpers.createSimpleTransition)('slide-y-reverse-transition');
+  // JavaScript transitions
+  var VExpandTransition = exports.VExpandTransition = (0, helpers.createJavaScriptTransition)('expand-transition', (0, _expandTransition2.default)());
+  var VRowExpandTransition = exports.VRowExpandTransition = (0, helpers.createJavaScriptTransition)('row-expand-transition', (0, _expandTransition2.default)('datatable__expand-col--expanded'));
+  exports.default = {
+      $_vuetify_subcomponents: {
+          VBottomSheetTransition: VBottomSheetTransition,
+          VCarouselTransition: VCarouselTransition,
+          VCarouselReverseTransition: VCarouselReverseTransition,
+          VDialogTransition: VDialogTransition,
+          VDialogBottomTransition: VDialogBottomTransition,
+          VFabTransition: VFabTransition,
+          VFadeTransition: VFadeTransition,
+          VMenuTransition: VMenuTransition,
+          VScaleTransition: VScaleTransition,
+          VScrollXTransition: VScrollXTransition,
+          VScrollXReverseTransition: VScrollXReverseTransition,
+          VScrollYTransition: VScrollYTransition,
+          VScrollYReverseTransition: VScrollYReverseTransition,
+          VSlideXTransition: VSlideXTransition,
+          VSlideXReverseTransition: VSlideXReverseTransition,
+          VSlideYTransition: VSlideYTransition,
+          VSlideYReverseTransition: VSlideYReverseTransition,
+          VTabReverseTransition: VTabReverseTransition,
+          VTabTransition: VTabTransition,
+          VExpandTransition: VExpandTransition,
+          VRowExpandTransition: VRowExpandTransition
+      }
+  };
+
+  });
+
+  unwrapExports(transitions);
+  var transitions_1 = transitions.VRowExpandTransition;
+  var transitions_2 = transitions.VExpandTransition;
+  var transitions_3 = transitions.VSlideYReverseTransition;
+  var transitions_4 = transitions.VSlideYTransition;
+  var transitions_5 = transitions.VSlideXReverseTransition;
+  var transitions_6 = transitions.VSlideXTransition;
+  var transitions_7 = transitions.VScrollYReverseTransition;
+  var transitions_8 = transitions.VScrollYTransition;
+  var transitions_9 = transitions.VScrollXReverseTransition;
+  var transitions_10 = transitions.VScrollXTransition;
+  var transitions_11 = transitions.VScaleTransition;
+  var transitions_12 = transitions.VFadeTransition;
+  var transitions_13 = transitions.VDialogBottomTransition;
+  var transitions_14 = transitions.VDialogTransition;
+  var transitions_15 = transitions.VFabTransition;
+  var transitions_16 = transitions.VMenuTransition;
+  var transitions_17 = transitions.VTabReverseTransition;
+  var transitions_18 = transitions.VTabTransition;
+  var transitions_19 = transitions.VCarouselReverseTransition;
+  var transitions_20 = transitions.VCarouselTransition;
+  var transitions_21 = transitions.VBottomSheetTransition;
+
+  var VProgressLinear = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+
+
+
+
+  var _mixins2 = _interopRequireDefault(mixins_1);
+
+
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+  // Mixins
+
+  // Helpers
+
+
+  /* @vue/component */
+  exports.default = (0, _mixins2.default)(_colorable2.default).extend({
+      name: 'v-progress-linear',
+      props: {
+          active: {
+              type: Boolean,
+              default: true
+          },
+          backgroundColor: {
+              type: String,
+              default: null
+          },
+          backgroundOpacity: {
+              type: [Number, String],
+              default: null
+          },
+          bufferValue: {
+              type: [Number, String],
+              default: 100
+          },
+          color: {
+              type: String,
+              default: 'primary'
+          },
+          height: {
+              type: [Number, String],
+              default: 7
+          },
+          indeterminate: Boolean,
+          query: Boolean,
+          value: {
+              type: [Number, String],
+              default: 0
+          }
+      },
+      computed: {
+          styles: function styles() {
+              var styles = {};
+              if (!this.active) {
+                  styles.height = 0;
+              }
+              if (!this.indeterminate && parseInt(this.bufferValue, 10) !== 100) {
+                  styles.width = this.bufferValue + '%';
+              }
+              return styles;
+          },
+          effectiveWidth: function effectiveWidth() {
+              if (!this.bufferValue) {
+                  return 0;
+              }
+              return +this.value * 100 / +this.bufferValue;
+          },
+          backgroundStyle: function backgroundStyle() {
+              var backgroundOpacity = this.backgroundOpacity == null ? this.backgroundColor ? 1 : 0.3 : parseFloat(this.backgroundOpacity);
+              return {
+                  height: this.active ? (0, helpers.convertToUnit)(this.height) : 0,
+                  opacity: backgroundOpacity,
+                  width: this.bufferValue + '%'
+              };
+          }
+      },
+      methods: {
+          genDeterminate: function genDeterminate(h) {
+              return h('div', this.setBackgroundColor(this.color, {
+                  ref: 'front',
+                  staticClass: 'v-progress-linear__bar__determinate',
+                  style: {
+                      width: this.effectiveWidth + '%'
+                  }
+              }));
+          },
+          genBar: function genBar(h, name) {
+              return h('div', this.setBackgroundColor(this.color, {
+                  staticClass: 'v-progress-linear__bar__indeterminate',
+                  class: _defineProperty({}, name, true)
+              }));
+          },
+          genIndeterminate: function genIndeterminate(h) {
+              return h('div', {
+                  ref: 'front',
+                  staticClass: 'v-progress-linear__bar__indeterminate',
+                  class: {
+                      'v-progress-linear__bar__indeterminate--active': this.active
+                  }
+              }, [this.genBar(h, 'long'), this.genBar(h, 'short')]);
+          }
+      },
+      render: function render(h) {
+          var fade = h(transitions.VFadeTransition, this.indeterminate ? [this.genIndeterminate(h)] : []);
+          var slide = h(transitions.VSlideXTransition, this.indeterminate ? [] : [this.genDeterminate(h)]);
+          var bar = h('div', {
+              staticClass: 'v-progress-linear__bar',
+              style: this.styles
+          }, [fade, slide]);
+          var background = h('div', {
+              staticClass: 'v-progress-linear__background',
+              class: [this.backgroundColor || this.color],
+              style: this.backgroundStyle
+          });
+          return h('div', {
+              staticClass: 'v-progress-linear',
+              class: {
+                  'v-progress-linear--query': this.query
+              },
+              style: {
+                  height: (0, helpers.convertToUnit)(this.height)
+              },
+              on: this.$listeners
+          }, [background, bar]);
+      }
+  });
+
+  });
+
+  unwrapExports(VProgressLinear);
+
+  var VProgressLinear$2 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.VProgressLinear = undefined;
+
+
+
+  var _VProgressLinear2 = _interopRequireDefault(VProgressLinear);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.VProgressLinear = _VProgressLinear2.default;
+  exports.default = _VProgressLinear2.default;
+
+  });
+
+  unwrapExports(VProgressLinear$2);
+  var VProgressLinear_1 = VProgressLinear$2.VProgressLinear;
+
+  var loadable = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+
+
+  var _VProgressLinear2 = _interopRequireDefault(VProgressLinear$2);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  /**
+   * Loadable
+   *
+   * @mixin
+   *
+   * Used to add linear progress bar to components
+   * Can use a default bar with a specific color
+   * or designate a custom progress linear bar
+   */
+  /* @vue/component */
+  exports.default = _vue2.default.extend().extend({
+      name: 'loadable',
+      props: {
+          loading: {
+              type: [Boolean, String],
+              default: false
+          }
+      },
+      methods: {
+          genProgress: function genProgress() {
+              if (this.loading === false) return null;
+              return this.$slots.progress || this.$createElement(_VProgressLinear2.default, {
+                  props: {
+                      color: this.loading === true || this.loading === '' ? this.color || 'primary' : this.loading,
+                      height: 2,
+                      indeterminate: true
+                  }
+              });
+          }
+      }
+  });
+
+  });
+
+  unwrapExports(loadable);
+
+  var console_1 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.consoleInfo = consoleInfo;
+  exports.consoleWarn = consoleWarn;
+  exports.consoleError = consoleError;
+  exports.deprecate = deprecate;
+  function createMessage(message, vm, parent) {
+      if (parent) {
+          vm = {
+              _isVue: true,
+              $parent: parent,
+              $options: vm
+          };
+      }
+      if (vm) {
+          // Only show each message once per instance
+          vm.$_alreadyWarned = vm.$_alreadyWarned || [];
+          if (vm.$_alreadyWarned.includes(message)) return;
+          vm.$_alreadyWarned.push(message);
+      }
+      return '[Vuetify] ' + message + (vm ? generateComponentTrace(vm) : '');
+  }
+  function consoleInfo(message, vm, parent) {
+      var newMessage = createMessage(message, vm, parent);
+      newMessage != null && console.info(newMessage);
+  }
+  function consoleWarn(message, vm, parent) {
+      var newMessage = createMessage(message, vm, parent);
+      newMessage != null && console.warn(newMessage);
+  }
+  function consoleError(message, vm, parent) {
+      var newMessage = createMessage(message, vm, parent);
+      newMessage != null && console.error(newMessage);
+  }
+  function deprecate(original, replacement, vm, parent) {
+      consoleWarn('\'' + original + '\' is deprecated, use \'' + replacement + '\' instead', vm, parent);
+  }
+  /**
+   * Shamelessly stolen from vuejs/vue/blob/dev/src/core/util/debug.js
+   */
+  var classifyRE = /(?:^|[-_])(\w)/g;
+  var classify = function classify(str) {
+      return str.replace(classifyRE, function (c) {
+          return c.toUpperCase();
+      }).replace(/[-_]/g, '');
+  };
+  function formatComponentName(vm, includeFile) {
+      if (vm.$root === vm) {
+          return '<Root>';
+      }
+      var options = typeof vm === 'function' && vm.cid != null ? vm.options : vm._isVue ? vm.$options || vm.constructor.options : vm || {};
+      var name = options.name || options._componentTag;
+      var file = options.__file;
+      if (!name && file) {
+          var match = file.match(/([^/\\]+)\.vue$/);
+          name = match && match[1];
+      }
+      return (name ? '<' + classify(name) + '>' : '<Anonymous>') + (file && includeFile !== false ? ' at ' + file : '');
+  }
+  function generateComponentTrace(vm) {
+      if (vm._isVue && vm.$parent) {
+          var tree = [];
+          var currentRecursiveSequence = 0;
+          while (vm) {
+              if (tree.length > 0) {
+                  var last = tree[tree.length - 1];
+                  if (last.constructor === vm.constructor) {
+                      currentRecursiveSequence++;
+                      vm = vm.$parent;
+                      continue;
+                  } else if (currentRecursiveSequence > 0) {
+                      tree[tree.length - 1] = [last, currentRecursiveSequence];
+                      currentRecursiveSequence = 0;
+                  }
+              }
+              tree.push(vm);
+              vm = vm.$parent;
+          }
+          return '\n\nfound in\n\n' + tree.map(function (vm, i) {
+              return '' + (i === 0 ? '---> ' : ' '.repeat(5 + i * 2)) + (Array.isArray(vm) ? formatComponentName(vm[0]) + '... (' + vm[1] + ' recursive calls)' : formatComponentName(vm));
+          }).join('\n');
+      } else {
+          return '\n\n(found in ' + formatComponentName(vm) + ')';
+      }
+  }
+
+  });
+
+  unwrapExports(console_1);
+  var console_2 = console_1.consoleInfo;
+  var console_3 = console_1.consoleWarn;
+  var console_4 = console_1.consoleError;
+  var console_5 = console_1.deprecate;
+
+  var registrable = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+  exports.inject = inject;
+  exports.provide = provide;
+
+
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  function generateWarning(child, parent) {
+      return function () {
+          return (0, console_1.consoleWarn)('The ' + child + ' component must be used inside a ' + parent);
+      };
+  }
+  function inject(namespace, child, parent) {
+      var defaultImpl = child && parent ? {
+          register: generateWarning(child, parent),
+          unregister: generateWarning(child, parent)
+      } : null;
+      return _vue2.default.extend({
+          name: 'registrable-inject',
+          inject: _defineProperty({}, namespace, {
+              default: defaultImpl
+          })
+      });
+  }
+  function provide(namespace) {
+      return _vue2.default.extend({
+          name: 'registrable-provide',
+          methods: {
+              register: null,
+              unregister: null
+          },
+          provide: function provide() {
+              return _defineProperty({}, namespace, {
+                  register: this.register,
+                  unregister: this.unregister
+              });
+          }
+      });
+  }
+
+  });
+
+  unwrapExports(registrable);
+  var registrable_1 = registrable.inject;
+  var registrable_2 = registrable.provide;
+
+  var validatable = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+  // Mixins
+
+
+
+
+
+
+
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  /* @vue/component */
+  exports.default = {
+      name: 'validatable',
+      mixins: [_colorable2.default, (0, registrable.inject)('form')],
+      props: {
+          error: Boolean,
+          errorCount: {
+              type: [Number, String],
+              default: 1
+          },
+          errorMessages: {
+              type: [String, Array],
+              default: function _default() {
+                  return [];
+              }
+          },
+          messages: {
+              type: [String, Array],
+              default: function _default() {
+                  return [];
+              }
+          },
+          rules: {
+              type: Array,
+              default: function _default() {
+                  return [];
+              }
+          },
+          success: Boolean,
+          successMessages: {
+              type: [String, Array],
+              default: function _default() {
+                  return [];
+              }
+          },
+          validateOnBlur: Boolean
+      },
+      data: function data() {
+          return {
+              errorBucket: [],
+              hasColor: false,
+              hasFocused: false,
+              hasInput: false,
+              isResetting: false,
+              valid: false
+          };
+      },
+      computed: {
+          hasError: function hasError() {
+              return this.internalErrorMessages.length > 0 || this.errorBucket.length > 0 || this.error;
+          },
+          externalError: function externalError() {
+              return this.internalErrorMessages.length > 0 || this.error;
+          },
+
+          // TODO: Add logic that allows the user to enable based
+          // upon a good validation
+          hasSuccess: function hasSuccess() {
+              return this.successMessages.length > 0 || this.success;
+          },
+          hasMessages: function hasMessages() {
+              return this.validations.length > 0;
+          },
+          hasState: function hasState() {
+              return this.hasSuccess || this.shouldValidate && this.hasError;
+          },
+          internalErrorMessages: function internalErrorMessages() {
+              return this.errorMessages || '';
+          },
+          shouldValidate: function shouldValidate() {
+              return this.externalError || !this.isResetting && (this.validateOnBlur ? this.hasFocused && !this.isFocused : this.hasInput || this.hasFocused);
+          },
+          validations: function validations() {
+              return this.validationTarget.slice(0, this.errorCount);
+          },
+          validationState: function validationState() {
+              if (this.hasError && this.shouldValidate) return 'error';
+              if (this.hasSuccess) return 'success';
+              if (this.hasColor) return this.color;
+              return null;
+          },
+          validationTarget: function validationTarget() {
+              var target = this.internalErrorMessages.length > 0 ? this.errorMessages : this.successMessages.length > 0 ? this.successMessages : this.messages;
+              // String
+              if (!Array.isArray(target)) {
+                  return [target];
+                  // Array with items
+              } else if (target.length > 0) {
+                  return target;
+                  // Currently has validation
+              } else if (this.shouldValidate) {
+                  return this.errorBucket;
+              } else {
+                  return [];
+              }
+          }
+      },
+      watch: {
+          rules: {
+              handler: function handler(newVal, oldVal) {
+                  if ((0, helpers.deepEqual)(newVal, oldVal)) return;
+                  this.validate();
+              },
+
+              deep: true
+          },
+          internalValue: function internalValue() {
+              // If it's the first time we're setting input,
+              // mark it with hasInput
+              this.hasInput = true;
+              this.validateOnBlur || this.$nextTick(this.validate);
+          },
+          isFocused: function isFocused(val) {
+              if (!val) {
+                  this.hasFocused = true;
+                  this.validateOnBlur && this.validate();
+              }
+          },
+          isResetting: function isResetting() {
+              var _this = this;
+
+              setTimeout(function () {
+                  _this.hasInput = false;
+                  _this.hasFocused = false;
+                  _this.isResetting = false;
+              }, 0);
+          },
+          hasError: function hasError(val) {
+              if (this.shouldValidate) {
+                  this.$emit('update:error', val);
+              }
+          }
+      },
+      beforeMount: function beforeMount() {
+          this.validate();
+      },
+      created: function created() {
+          this.form && this.form.register(this);
+      },
+      beforeDestroy: function beforeDestroy() {
+          this.form && this.form.unregister(this);
+      },
+
+      methods: {
+          /** @public */
+          reset: function reset() {
+              this.isResetting = true;
+              this.internalValue = Array.isArray(this.internalValue) ? [] : undefined;
+          },
+
+          /** @public */
+          resetValidation: function resetValidation() {
+              this.isResetting = true;
+          },
+
+          /** @public */
+          validate: function validate() {
+              var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+              var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.internalValue;
+
+              var errorBucket = [];
+              if (force) this.hasInput = this.hasFocused = true;
+              for (var index = 0; index < this.rules.length; index++) {
+                  var rule = this.rules[index];
+                  var valid = typeof rule === 'function' ? rule(value) : rule;
+                  if (valid === false || typeof valid === 'string') {
+                      errorBucket.push(valid);
+                  } else if (valid !== true) {
+                      (0, console_1.consoleError)('Rules should return a string or boolean, received \'' + (typeof valid === 'undefined' ? 'undefined' : _typeof(valid)) + '\' instead', this);
+                  }
+              }
+              this.errorBucket = errorBucket;
+              this.valid = errorBucket.length === 0;
+              return this.valid;
+          }
+      }
+  };
+
+  });
+
+  unwrapExports(validatable);
+
+  var VInput = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+      value: true
+  });
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // Styles
+
+  // Components
+
+  // Mixins
+
+  // Utilities
+
+
+
+
+
+
+  var _VIcon2 = _interopRequireDefault(VIcon$1);
+
+
+
+  var _VLabel2 = _interopRequireDefault(VLabel$2);
+
+
+
+  var _VMessages2 = _interopRequireDefault(VMessages$2);
+
+
+
+  var _colorable2 = _interopRequireDefault(colorable);
+
+
+
+  var _loadable2 = _interopRequireDefault(loadable);
+
+
+
+  var _themeable2 = _interopRequireDefault(themeable);
+
+
+
+  var _validatable2 = _interopRequireDefault(validatable);
+
+
+
+
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  /* @vue/component */
+  exports.default = {
+      name: 'v-input',
+      mixins: [_colorable2.default, _loadable2.default, _themeable2.default, _validatable2.default],
+      props: {
+          appendIcon: String,
+          /** @deprecated */
+          appendIconCb: Function,
+          backgroundColor: {
+              type: String,
+              default: ''
+          },
+          disabled: Boolean,
+          height: [Number, String],
+          hideDetails: Boolean,
+          hint: String,
+          label: String,
+          persistentHint: Boolean,
+          prependIcon: String,
+          /** @deprecated */
+          prependIconCb: Function,
+          readonly: Boolean,
+          value: { required: false }
+      },
+      data: function data(vm) {
+          return {
+              lazyValue: vm.value,
+              isFocused: false
+          };
+      },
+      computed: {
+          classesInput: function classesInput() {
+              return _extends({}, this.classes, {
+                  'v-input--has-state': this.hasState,
+                  'v-input--hide-details': this.hideDetails,
+                  'v-input--is-label-active': this.isLabelActive,
+                  'v-input--is-dirty': this.isDirty,
+                  'v-input--is-disabled': this.disabled,
+                  'v-input--is-focused': this.isFocused,
+                  'v-input--is-loading': this.loading !== false,
+                  'v-input--is-readonly': this.readonly
+              }, this.themeClasses);
+          },
+          directivesInput: function directivesInput() {
+              return [];
+          },
+          hasHint: function hasHint() {
+              return !this.hasMessages && this.hint && (this.persistentHint || this.isFocused);
+          },
+          hasLabel: function hasLabel() {
+              return Boolean(this.$slots.label || this.label);
+          },
+
+          // Proxy for `lazyValue`
+          // This allows an input
+          // to function without
+          // a provided model
+          internalValue: {
+              get: function get() {
+                  return this.lazyValue;
+              },
+              set: function set(val) {
+                  this.lazyValue = val;
+                  this.$emit(this.$_modelEvent, val);
+              }
+          },
+          isDirty: function isDirty() {
+              return !!this.lazyValue;
+          },
+          isDisabled: function isDisabled() {
+              return Boolean(this.disabled || this.readonly);
+          },
+          isLabelActive: function isLabelActive() {
+              return this.isDirty;
+          }
+      },
+      watch: {
+          value: function value(val) {
+              this.lazyValue = val;
+          }
+      },
+      beforeCreate: function beforeCreate() {
+          // v-radio-group needs to emit a different event
+          // https://github.com/vuetifyjs/vuetify/issues/4752
+          this.$_modelEvent = this.$options.model && this.$options.model.event || 'input';
+      },
+
+      methods: {
+          genContent: function genContent() {
+              return [this.genPrependSlot(), this.genControl(), this.genAppendSlot()];
+          },
+          genControl: function genControl() {
+              return this.$createElement('div', {
+                  staticClass: 'v-input__control'
+              }, [this.genInputSlot(), this.genMessages()]);
+          },
+          genDefaultSlot: function genDefaultSlot() {
+              return [this.genLabel(), this.$slots.default];
+          },
+
+          // TODO: remove shouldDeprecate (2.0), used for clearIcon
+          genIcon: function genIcon(type, cb) {
+              var _this = this;
+
+              var shouldDeprecate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+              var icon = this[type + 'Icon'];
+              var eventName = 'click:' + (0, helpers.kebabCase)(type);
+              cb = cb || this[type + 'IconCb'];
+              if (shouldDeprecate && type && cb) {
+                  (0, console_1.deprecate)(':' + type + '-icon-cb', '@' + eventName, this);
+              }
+              var data = {
+                  props: {
+                      color: this.validationState,
+                      dark: this.dark,
+                      disabled: this.disabled,
+                      light: this.light
+                  },
+                  on: !(this.$listeners[eventName] || cb) ? null : {
+                      click: function click(e) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          _this.$emit(eventName, e);
+                          cb && cb(e);
+                      },
+                      // Container has mouseup event that will
+                      // trigger menu open if enclosed
+                      mouseup: function mouseup(e) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                      }
+                  }
+              };
+              return this.$createElement('div', {
+                  staticClass: 'v-input__icon v-input__icon--' + (0, helpers.kebabCase)(type),
+                  key: '' + type + icon
+              }, [this.$createElement(_VIcon2.default, data, icon)]);
+          },
+          genInputSlot: function genInputSlot() {
+              return this.$createElement('div', this.setBackgroundColor(this.backgroundColor, {
+                  staticClass: 'v-input__slot',
+                  style: { height: (0, helpers.convertToUnit)(this.height) },
+                  directives: this.directivesInput,
+                  on: {
+                      click: this.onClick,
+                      mousedown: this.onMouseDown,
+                      mouseup: this.onMouseUp
+                  },
+                  ref: 'input-slot'
+              }), [this.genDefaultSlot(), this.genProgress()]);
+          },
+          genLabel: function genLabel() {
+              if (!this.hasLabel) return null;
+              return this.$createElement(_VLabel2.default, {
+                  props: {
+                      color: this.validationState,
+                      dark: this.dark,
+                      focused: this.hasState,
+                      for: this.$attrs.id,
+                      light: this.light
+                  }
+              }, this.$slots.label || this.label);
+          },
+          genMessages: function genMessages() {
+              if (this.hideDetails) return null;
+              var messages = this.hasHint ? [this.hint] : this.validations;
+              return this.$createElement(_VMessages2.default, {
+                  props: {
+                      color: this.hasHint ? '' : this.validationState,
+                      dark: this.dark,
+                      light: this.light,
+                      value: this.hasMessages || this.hasHint ? messages : []
+                  }
+              });
+          },
+          genSlot: function genSlot(type, location, slot) {
+              if (!slot.length) return null;
+              var ref = type + '-' + location;
+              return this.$createElement('div', {
+                  staticClass: 'v-input__' + ref,
+                  ref: ref
+              }, slot);
+          },
+          genPrependSlot: function genPrependSlot() {
+              var slot = [];
+              if (this.$slots['prepend']) {
+                  slot.push(this.$slots['prepend']);
+              } else if (this.prependIcon) {
+                  slot.push(this.genIcon('prepend'));
+              }
+              return this.genSlot('prepend', 'outer', slot);
+          },
+          genAppendSlot: function genAppendSlot() {
+              var slot = [];
+              // Append icon for text field was really
+              // an appended inner icon, v-text-field
+              // will overwrite this method in order to obtain
+              // backwards compat
+              if (this.$slots['append']) {
+                  slot.push(this.$slots['append']);
+              } else if (this.appendIcon) {
+                  slot.push(this.genIcon('append'));
+              }
+              return this.genSlot('append', 'outer', slot);
+          },
+          onClick: function onClick(e) {
+              this.$emit('click', e);
+          },
+          onMouseDown: function onMouseDown(e) {
+              this.$emit('mousedown', e);
+          },
+          onMouseUp: function onMouseUp(e) {
+              this.$emit('mouseup', e);
+          }
+      },
+      render: function render(h) {
+          return h('div', this.setTextColor(this.validationState, {
+              staticClass: 'v-input',
+              attrs: this.attrsInput,
+              'class': this.classesInput
+          }), this.genContent());
+      }
+  };
+
+  });
+
+  unwrapExports(VInput);
+
+  var VInput$2 = createCommonjsModule(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.VInput = undefined;
+
+
+
+  var _VInput2 = _interopRequireDefault(VInput);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  exports.VInput = _VInput2.default;
+  exports.default = _VInput2.default;
+
+  });
+
+  var Input = unwrapExports(VInput$2);
+  var VInput_1 = VInput$2.VInput;
 
   var defaultThousandsSeparator;
   var defaultDecimalSeparator;
