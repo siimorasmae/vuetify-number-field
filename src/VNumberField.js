@@ -1,11 +1,11 @@
 
 // Styles
-import 'vuetify/src/stylus/components/_input-groups.styl'
+import 'vuetify/src/stylus/components/_inputs.styl'
 import 'vuetify/src/stylus/components/_text-fields.styl'
 
 // Mixins
 import Colorable from 'vuetify/es5/mixins/colorable'
-import Input from 'vuetify/es5/mixins/input'
+import Input from 'vuetify/es5/components/VInput'
 
 import defaults from './options'
 
